@@ -9,11 +9,11 @@
     
     <style>
         :root {
-            --glass-bg: rgba(25, 25, 25, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --accent: #6366f1; /* 靛蓝色，高级感 */
+            --glass-bg: rgba(20, 20, 22, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --text-main: #ffffff;
-            --text-sub: #a1a1aa;
+            --text-sub: #94a3b8;
+            --accent-glow: rgba(99, 102, 241, 0.5);
         }
 
         body {
@@ -22,13 +22,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #0f0f11;
+            background-color: #000;
             font-family: 'Inter', sans-serif;
             overflow: hidden;
             color: var(--text-main);
         }
 
-        /* 动态流体背景 */
+        /* 1. 极简流体背景 - 你的“简单光效”来源 */
         .background-blobs {
             position: absolute;
             top: 0;
@@ -38,65 +38,71 @@
             z-index: -1;
             overflow: hidden;
         }
+        
         .blob {
             position: absolute;
-            filter: blur(80px);
-            opacity: 0.6;
-            animation: float 10s infinite ease-in-out alternate;
+            border-radius: 50%;
+            filter: blur(80px); /* 极致模糊，制造光晕感 */
+            opacity: 0.5;
+            animation: float 15s infinite ease-in-out alternate;
         }
-        .blob-1 { top: 10%; left: 20%; width: 300px; height: 300px; background: #4f46e5; animation-delay: 0s; }
-        .blob-2 { bottom: 20%; right: 10%; width: 350px; height: 350px; background: #ec4899; animation-delay: -2s; }
-        .blob-3 { bottom: 10%; left: 30%; width: 200px; height: 200px; background: #06b6d4; animation-delay: -4s; }
+        
+        /* 紫色光团 */
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #4f46e5; animation-delay: 0s; }
+        /* 粉色光团 */
+        .blob-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: #ec4899; animation-delay: -5s; }
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(20px, -20px) scale(1.1); }
+            100% { transform: translate(30px, -30px) scale(1.1); }
         }
 
-        /* 主卡片：毛玻璃 + 3D Tilt */
+        /* 2. 主卡片 - 静止但高级 */
         .card {
+            position: relative;
             background: var(--glass-bg);
-            backdrop-filter: blur(24px); /* 核心：毛玻璃模糊 */
-            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(40px); /* 毛玻璃强度 */
+            -webkit-backdrop-filter: blur(40px);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
-            padding: 40px;
+            padding: 48px;
             width: 320px;
             text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transform-style: preserve-3d;
-            transform: perspective(1000px);
+            /* 只有阴影，没有位移 */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            animation: fadeIn 1.5s ease-out;
         }
 
-        /* 头像区域 */
+        /* 头像光环 */
         .avatar-container {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 24px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 800;
             color: white;
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-            transform: translateZ(20px); /* 让头像浮起来 */
+            /* 静态微光 */
+            box-shadow: 0 0 20px var(--accent-glow);
+            border: 2px solid rgba(255,255,255,0.2);
         }
 
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             margin: 0 0 8px;
-            font-weight: 800;
-            transform: translateZ(10px);
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         p.bio {
             color: var(--text-sub);
-            font-size: 0.9rem;
-            margin-bottom: 30px;
-            transform: translateZ(10px);
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+            line-height: 1.5;
         }
 
         /* 链接按钮组 */
@@ -104,7 +110,6 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            transform: translateZ(15px); /* 按钮也浮起来 */
         }
 
         .btn {
@@ -116,36 +121,35 @@
             border-radius: 12px;
             text-decoration: none;
             color: white;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
             font-size: 0.95rem;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
+            font-weight: 500;
         }
 
-        /* 按钮的光感悬停效果 */
+        /* 鼠标放上去时的光效 */
         .btn:hover {
             background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.3);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px); /* 微微上浮 */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* 增加投影 */
         }
 
-        /* 按钮点击波纹 */
         .btn:active {
             transform: scale(0.98);
         }
 
-        /* 底部 */
         .footer {
-            margin-top: 25px;
+            margin-top: 30px;
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.2);
-            transform: translateZ(5px);
+            color: rgba(255, 255, 255, 0.3);
         }
-        
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -153,22 +157,17 @@
     <div class="background-blobs">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
     </div>
 
-    <div class="card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
-        
-        <div class="avatar-container">
-            D
-        </div>
-
+    <div class="card">
+        <div class="avatar-container">D</div>
         <h1>DShadow</h1>
-        <p class="bio">Digital Creator / Tech Enthusiast</p>
+        <p class="bio">Exploring the digital void.<br>Network Architect.</p>
 
         <div class="links">
-            <a href="mailto:hi@dshadow.net" class="btn">
+            <a href="mailto:root@dshadow.net" class="btn">
                 <i class="fa-solid fa-envelope"></i>
-                Email Me
+                Contact Me
             </a>
 
             <a href="https://github.com/dshadowcn" target="_blank" class="btn">
@@ -177,8 +176,8 @@
             </a>
 
             <a href="#" class="btn">
-                <i class="fa-brands fa-bilibili"></i>
-                Bilibili
+                <i class="fa-solid fa-globe"></i>
+                Website
             </a>
         </div>
 
@@ -187,15 +186,5 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
-    <script>
-        // 初始化倾斜效果
-        VanillaTilt.init(document.querySelector(".card"), {
-            max: 15, // 最大倾斜角度
-            speed: 400, // 恢复速度
-            glare: true, // 开启反光
-            "max-glare": 0.2, // 反光强度
-        });
-    </script>
 </body>
 </html>
