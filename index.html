@@ -1,16 +1,201 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>DShadow Network</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DShadow | Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        body { background-color: #000; color: #0f0; font-family: monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        h1 { border-right: .15em solid orange; white-space: nowrap; overflow: hidden; animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite; }
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: orange; } }
+        :root {
+            --glass-bg: rgba(25, 25, 25, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent: #6366f1; /* 靛蓝色，高级感 */
+            --text-main: #ffffff;
+            --text-sub: #a1a1aa;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0f0f11;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            color: var(--text-main);
+        }
+
+        /* 动态流体背景 */
+        .background-blobs {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        .blob-1 { top: 10%; left: 20%; width: 300px; height: 300px; background: #4f46e5; animation-delay: 0s; }
+        .blob-2 { bottom: 20%; right: 10%; width: 350px; height: 350px; background: #ec4899; animation-delay: -2s; }
+        .blob-3 { bottom: 10%; left: 30%; width: 200px; height: 200px; background: #06b6d4; animation-delay: -4s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(20px, -20px) scale(1.1); }
+        }
+
+        /* 主卡片：毛玻璃 + 3D Tilt */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px); /* 核心：毛玻璃模糊 */
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+
+        /* 头像区域 */
+        .avatar-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            transform: translateZ(20px); /* 让头像浮起来 */
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin: 0 0 8px;
+            font-weight: 800;
+            transform: translateZ(10px);
+        }
+
+        p.bio {
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            transform: translateZ(10px);
+        }
+
+        /* 链接按钮组 */
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transform: translateZ(15px); /* 按钮也浮起来 */
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.95rem;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 按钮的光感悬停效果 */
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.3);
+        }
+
+        /* 按钮点击波纹 */
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 底部 */
+        .footer {
+            margin-top: 25px;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.2);
+            transform: translateZ(5px);
+        }
+        
     </style>
 </head>
 <body>
-    <h1>System Online. Welcome, DShadow.</h1>
+
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+        
+        <div class="avatar-container">
+            D
+        </div>
+
+        <h1>DShadow</h1>
+        <p class="bio">Digital Creator / Tech Enthusiast</p>
+
+        <div class="links">
+            <a href="mailto:hi@dshadow.net" class="btn">
+                <i class="fa-solid fa-envelope"></i>
+                Email Me
+            </a>
+
+            <a href="https://github.com/dshadowcn" target="_blank" class="btn">
+                <i class="fa-brands fa-github"></i>
+                GitHub
+            </a>
+
+            <a href="#" class="btn">
+                <i class="fa-brands fa-bilibili"></i>
+                Bilibili
+            </a>
+        </div>
+
+        <div class="footer">
+            © 2026 dshadow.net
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script>
+        // 初始化倾斜效果
+        VanillaTilt.init(document.querySelector(".card"), {
+            max: 15, // 最大倾斜角度
+            speed: 400, // 恢复速度
+            glare: true, // 开启反光
+            "max-glare": 0.2, // 反光强度
+        });
+    </script>
 </body>
 </html>
